@@ -1,0 +1,243 @@
+﻿<Window x:Class="WokwiToComPort.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WokwiToComPort"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        mc:Ignorable="d" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResizeWithGrip" Loaded="Window_Loaded"
+        Icon="/iconWTC.png">
+    <Window.Resources>
+        <Style TargetType="Label" x:Key="StandartLabel">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Button" x:Key="WindowControl">
+            <EventSetter Event="MouseEnter" Handler="WindowControlHighlighte"/>
+            <EventSetter Event="MouseLeave" Handler="WindowControlHighlighte"/>
+            <EventSetter Event="Click" Handler="WindowControlClick"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="Transparent" CornerRadius="10"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="MenuButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                                BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" 
+                                BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}" 
+                                CornerRadius="15">
+                            <Label Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                   Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                                   Style="{StaticResource StandartLabel}" Margin="0,-4,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Green"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                                        <Label x:Name="ItemContainerLabel" Content="{TemplateBinding Content}" FontSize="20"
+                                               Style="{StaticResource StandartLabel}" Foreground="{StaticResource Background}"/>
+                                    </Border>
+
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource Background}"/>
+                                            <Setter Property="Foreground" TargetName="ItemContainerLabel" Value="White" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          Background="{TemplateBinding Background}" 
+                                          Foreground="White" 
+                                          Height="{TemplateBinding Height}" 
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                          Focusable="False" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="Border" Background="{TemplateBinding Background}" 
+                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="15">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                              TextElement.FontWeight="Bold" TextElement.FontSize="20"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource HighlightedButton}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False"
+                                   PopupAnimation="Scroll">
+                                <Border x:Name="DropDownBorder" Background="White" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="10" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}">
+                                    <ScrollViewer>
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="MainBorder" Background="{StaticResource Background}" CornerRadius="{StaticResource BorderCorner}" MouseDown="Border_MouseDown">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+
+                <Rectangle x:Name="CollapseButtonLabel" Grid.Column="1" Height="3" Width="15"  Fill="{StaticResource MainButtonColor}" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" RadiusX="1.5" RadiusY="1.5"/>
+                <Button x:Name="CollapseButton" Grid.Column="1" Style="{StaticResource WindowControl}"/>
+
+                <Rectangle x:Name="ExpandButtonLabel" Grid.Column="2" Height="11" Width="15"  Stroke="{StaticResource MainButtonColor}" StrokeThickness="3" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" RadiusX="2.5" RadiusY="2.5"/>
+                <Button x:Name="ExpandButton" Grid.Column="2" Style="{StaticResource WindowControl}"/>
+
+                <Path x:Name="ExitButtonLabel" Grid.Column="3" Fill="{DynamicResource MainButtonColor}" Margin="0,2,0,-2" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path.Data>
+                        <GeometryGroup FillRule="Nonzero">
+                            <RectangleGeometry Rect="0,0,15,3" RadiusX="1.5" RadiusY="1.5">
+                                <RectangleGeometry.Transform>
+                                    <RotateTransform Angle="45" CenterX="7.5" CenterY="1.5"/>
+                                </RectangleGeometry.Transform>
+                            </RectangleGeometry>
+                            <RectangleGeometry Rect="0,0,15,3" RadiusX="1.5" RadiusY="1.5">
+                                <RectangleGeometry.Transform>
+                                    <RotateTransform Angle="-45" CenterX="7.5" CenterY="1.5"/>
+                                </RectangleGeometry.Transform>
+                            </RectangleGeometry>
+                        </GeometryGroup>
+                    </Path.Data>
+                </Path>
+                <Button x:Name="ExitButton" Grid.Column="3" Style="{StaticResource WindowControl}"/>
+            </Grid>
+
+            <cef:ChromiumWebBrowser Name="abb" Grid.Row="1" Address="https://wokwi.com/projects/365183531573537793"/>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="198*"/>
+                    <ColumnDefinition Width="202*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="TestBorder" Grid.Column="0" Margin="0,-220,0,0" Background="{StaticResource Background}" CornerRadius="15">
+                    <lvc:CartesianChart  Grid.Column="0" Height="220" DisableAnimations="True" AnimationsSpeed="0:0:0" CacheMode="BitmapCache" 
+                                        LegendLocation="None" VerticalAlignment="Center">
+                        <lvc:CartesianChart.Series>
+                            <lvc:LineSeries Values="{Binding grafPoints}" LineSmoothness="0.3" PointGeometrySize="6" />
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                </Border>
+
+
+                <Border Grid.Column="1" x:Name="InfoMenu" Margin="0,-220,0,0" Background="{StaticResource Background}" CornerRadius="15">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Name="mainButton" Grid.Row="0" Content="XX" FontSize="20" 
+                                Background="{StaticResource Background}" BorderBrush="White" Foreground="White" BorderThickness="3"
+                                Style="{StaticResource MenuButton}"/>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Background="Transparent" Grid.Column="0" Height="40" BorderBrush="White" BorderThickness="3" CornerRadius="15">
+                                <TextBox x:Name="BaudrateChange" Text="9600" FontSize="20" FontWeight="Bold" Padding="5" BorderThickness="0"
+                                         Foreground="White" Background="Transparent" Margin="0,-2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" TextChanged="BaudrateChange_TextChanged"/>
+                            </Border>
+
+                            <ComboBox Name="ComPortChoose" Grid.Column="2" Height="40" 
+                                      Background="{StaticResource Background}" BorderBrush="White" Foreground="White" BorderThickness="3" 
+                                      DropDownOpened="ComPortChoose_DropDownOpened" DropDownClosed="ComPortChoose_DropDownClosed"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="3" Height="40"/>
+
+                        <Button Grid.Row="4" Content="Вимкнути графік" FontSize="20" Click="TurnGraf_Click"
+                                Background="{StaticResource Background}" BorderBrush="White" Foreground="White" BorderThickness="3"
+                                Style="{StaticResource MenuButton}"/>
+
+                        <Label Grid.Row="5" Content="Творці: Яріз Ростислав, Рудченко Олександр, Пилипчук Андрій, Цвігун Маркіян"
+                               VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="0,50,0,00">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Foreground" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="LightGray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

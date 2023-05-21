@@ -1,0 +1,14 @@
+﻿<Application x:Class="WokwiToComPort.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WokwiToComPort"
+             StartupUri="WokwiToComPort.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="Background" Color="#1a1a1a"/>
+        <SolidColorBrush x:Key="HighlightedButton" Color="#3a3a3a"/>
+        <SolidColorBrush x:Key="MainButtonColor" Color="Gray"/>
+        <SolidColorBrush x:Key="HighlightedExitButton" Color="Red"/>
+        <SolidColorBrush x:Key="HighlightedOthersButton" Color="White"/>
+        <CornerRadius x:Key="BorderCorner">15</CornerRadius>
+    </Application.Resources>
+</Application>

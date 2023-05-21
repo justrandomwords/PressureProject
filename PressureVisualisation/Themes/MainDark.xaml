@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="Icon" UriSource="/Images/logo.png"/>
+    <BitmapImage x:Key="ThemeLogo" UriSource="/Images/themeLogoDark.png"/>
+    <BitmapImage x:Key="MainBackground" UriSource="/Images/backgroundDark.png"/>
+    <LinearGradientBrush x:Key="ComboboxBackground" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffd27a" Offset="0"/>
+        <GradientStop Color="#2e1028" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="MenuBackground" Color="#249ede"/>
+    <SolidColorBrush x:Key="MainText" Color="White"/>
+    <SolidColorBrush x:Key="StartOutputText" Color="White"/>
+    <SolidColorBrush x:Key="EndOutputText" Color="#ffd27a"/>
+    <SolidColorBrush x:Key="EndOutputTextGlow" Color="#ffd27a"/>
+
+    <SolidColorBrush x:Key="HighlightedText" Color="#f9febd"/>
+    <SolidColorBrush x:Key="ClickedText" Color="#f9febd"/>
+    <SolidColorBrush x:Key="Border" Color="White"/>
+
+    <SolidColorBrush x:Key="HighlightedExitButton" Color="Red"/>
+    <SolidColorBrush x:Key="HighlightedOthersButton" Color="#ffd27a"/>
+
+    <SolidColorBrush x:Key="Error" Color="Red"/>
+</ResourceDictionary>
